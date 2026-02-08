@@ -13,7 +13,6 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -46,11 +45,9 @@ public class Policy extends BaseEntity {
     @Column(name = "policy_number", nullable = false, unique = true, updatable = false, length = 20)
     private String policyNumber;
 
-    @NotBlank
     @Column(name = "customer_name", nullable = false)
     private String customerName;
 
-    @NotBlank
     @Column(name = "customer_email", nullable = false)
     private String customerEmail;
 
