@@ -1,6 +1,6 @@
 package com.rubin.insurance.policy_management_service.service.impl;
 
-import com.rubin.insurance.policy_management_service.configuration.exception_handling.BadRequestException;
+import com.rubin.insurance.policy_management_service.configuration.exception_handling.BusinessException;
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.NotFoundException;
 import com.rubin.insurance.policy_management_service.dto.ClaimRequest;
 import com.rubin.insurance.policy_management_service.dto.ClaimResponse;
@@ -68,7 +68,7 @@ public class ClaimServiceImpl implements ClaimService {
 
         if (updateClaimStatusDTO.claimStatus().equals(ClaimStatus.REJECTED)){
             if (updateClaimStatusDTO.rejectDescription() == null || updateClaimStatusDTO.rejectDescription().isBlank()){
-                throw new BadRequestException("Claim status cannot be updated without reject description");
+                throw new BusinessException("Claim status cannot be updated without reject description");
             }
             existing.setRejectionReason(updateClaimStatusDTO.rejectDescription());
         }
@@ -84,11 +84,11 @@ public class ClaimServiceImpl implements ClaimService {
     }
     private void validateClaim(Policy existingPolicy, ClaimRequest claimRequest){
         if(!existingPolicy.getStatus().equals(PolicyStatus.ACTIVE)){
-            throw new BadRequestException("Claims can be submitted only for ACTIVE policies");
+            throw new BusinessException("Claims can be submitted only for ACTIVE policies");
         }else if(claimRequest.getClaimAmount().compareTo(existingPolicy.getCoverageAmount()) == 1){
-            throw new BadRequestException("Claim amount cannot exceed policy coverage amount!");
+            throw new BusinessException("Claim amount cannot exceed policy coverage amount!");
         }else if(!(claimRequest.getIncidentDate().isAfter(existingPolicy.getStartDate()) && claimRequest.getIncidentDate().isBefore(existingPolicy.getEndDate()))){
-            throw new BadRequestException("Incident date should be between policy valid date!");
+            throw new BusinessException("Incident date should be between policy valid date!");
         }
     }
 }

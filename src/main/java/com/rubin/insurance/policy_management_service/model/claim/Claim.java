@@ -1,6 +1,7 @@
 package com.rubin.insurance.policy_management_service.model.claim;
 
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.BadRequestException;
+import com.rubin.insurance.policy_management_service.configuration.exception_handling.BusinessException;
 import com.rubin.insurance.policy_management_service.model.common.BaseEntity;
 import com.rubin.insurance.policy_management_service.model.policy.Policy;
 import jakarta.persistence.Column;
@@ -90,7 +91,7 @@ public class Claim extends BaseEntity {
 
     public void setStatus(ClaimStatus status) {
         if (this.status == ClaimStatus.APPROVED || this.status == ClaimStatus.REJECTED) {
-                throw new BadRequestException("Approved or rejected claims cannot change status.");
+                throw new BusinessException("Approved or rejected claims cannot change status.");
         }
         this.status = status;
     }

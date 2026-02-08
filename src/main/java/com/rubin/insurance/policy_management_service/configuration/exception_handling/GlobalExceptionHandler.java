@@ -25,6 +25,13 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(status).body(body);
     }
 
+    @ExceptionHandler(BusinessException.class)
+    public ResponseEntity<ApiError> handleBusinessException(BusinessException ex, HttpServletRequest req) {
+        HttpStatus status = ex.status();
+        ApiError body = buildError(status, ex.getMessage(), req, ex.details());
+        return ResponseEntity.status(status).body(body);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidation(MethodArgumentNotValidException ex, HttpServletRequest req) {
         Map<String, List<String>> fieldErrors = ex.getBindingResult()
@@ -35,8 +42,9 @@ public class GlobalExceptionHandler {
                         Collectors.mapping(fe -> Optional.ofNullable(fe.getDefaultMessage()).orElse("Invalid"), Collectors.toList())
                 ));
 
-        ApiError body = buildError(HttpStatus.BAD_REQUEST, "Validation failed", req, Map.of("fieldErrors", fieldErrors));
-        return ResponseEntity.badRequest().body(body);
+        HttpStatus status = HttpStatus.CONFLICT;
+        ApiError body = buildError(status, "Validation failed", req, Map.of("fieldErrors", fieldErrors));
+        return ResponseEntity.status(status).body(body);
     }
 
     @ExceptionHandler(Exception.class)

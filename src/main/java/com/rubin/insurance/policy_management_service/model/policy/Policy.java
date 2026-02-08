@@ -1,6 +1,7 @@
 package com.rubin.insurance.policy_management_service.model.policy;
 
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.BadRequestException;
+import com.rubin.insurance.policy_management_service.configuration.exception_handling.BusinessException;
 import com.rubin.insurance.policy_management_service.model.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -88,7 +89,7 @@ public class Policy extends BaseEntity {
 
     public void renew(){
         if (this.endDate.isAfter(LocalDate.now()) && this.status.equals(PolicyStatus.ACTIVE)) {
-            throw new BadRequestException("You can't renew until the first period finishes");
+            throw new BusinessException("You can't renew until the first period finishes");
         }
         this.startDate = LocalDate.now();
         this.endDate = LocalDate.now().plusMonths(6);
@@ -96,7 +97,7 @@ public class Policy extends BaseEntity {
 
     public void cancel() {
         if (status != PolicyStatus.ACTIVE) {
-            throw new BadRequestException("Only ACTIVE policies can be cancelled.");
+            throw new BusinessException("Only ACTIVE policies can be cancelled.");
         }
         this.status = PolicyStatus.CANCELLED;
     }
