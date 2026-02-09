@@ -2,6 +2,7 @@ package com.rubin.insurance.policy_management_service.dto;
 
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,31 +30,21 @@ import java.time.format.DateTimeFormatter;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@Schema(description = "Standard API response wrapper with status, message, and optional data payload")
 public class ApiResponseDTO<T> {
-    /**
-     * Status of the response, either "SUCCESS" or "ERROR".
-     */
+    @Schema(description = "Response status", example = "SUCCESS", allowableValues = {"SUCCESS", "ERROR"})
     private String status;
 
-    /**
-     * A human-readable message describing the response.
-     */
+    @Schema(description = "Human-readable message describing the response", example = "Policy created successfully")
     private String message;
 
-    /**
-     * Optional error code for error responses.
-     */
+    @Schema(description = "Optional error code for error responses")
     private Integer errorCode;
 
-    /**
-     * ISO formatted timestamp indicating when the response was created.
-     */
+    @Schema(description = "ISO formatted timestamp when the response was created", example = "2025-02-09T10:30:00")
     private String timestamp;
 
-    /**
-     * The payload of the response. This field is always included in the JSON,
-     * even when null, to maintain a consistent response structure.
-     */
+    @Schema(description = "Response payload (policy, claim, list, or pagination data)")
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private T data;
 
