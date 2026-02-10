@@ -1,19 +1,8 @@
 package com.rubin.insurance.policy_management_service.model.policy;
 
-import com.rubin.insurance.policy_management_service.configuration.exception_handling.BadRequestException;
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.BusinessException;
 import com.rubin.insurance.policy_management_service.model.common.BaseEntity;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -29,6 +18,10 @@ import java.time.Year;
         name = "policies",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_policy_number", columnNames = "policy_number")
+        },
+        indexes = {
+                @Index(name = "idx_policy_customer_email", columnList = "customer_email"),
+                @Index(name = "idx_policy_status", columnList = "status")
         }
 )
 @Getter

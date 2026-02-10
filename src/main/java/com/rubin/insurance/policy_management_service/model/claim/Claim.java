@@ -4,20 +4,7 @@ import com.rubin.insurance.policy_management_service.configuration.exception_han
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.BusinessException;
 import com.rubin.insurance.policy_management_service.model.common.BaseEntity;
 import com.rubin.insurance.policy_management_service.model.policy.Policy;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.SequenceGenerator;
-import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -37,6 +24,10 @@ import java.time.Year;
         name = "claims",
         uniqueConstraints = {
                 @UniqueConstraint(name = "uk_claim_number", columnNames = "claim_number")
+        },
+        indexes = {
+                @Index(name = "idx_claim_policy_id", columnList = "policy_id"),
+                @Index(name = "idx_claim_status", columnList = "status")
         }
 )
 @Getter
