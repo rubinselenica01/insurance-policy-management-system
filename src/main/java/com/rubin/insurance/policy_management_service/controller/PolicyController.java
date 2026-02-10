@@ -93,8 +93,8 @@ public class PolicyController {
             @Parameter(description = "Page number (1-based)", example = "1") @RequestParam(required = false, defaultValue = "1") int page,
             @Parameter(description = "Number of items per page", example = "10") @RequestParam(required = false, defaultValue = "10") int pageSize) {
         Pageable pageable = PaginationUtils.createPageable(page, pageSize);
-        Page<PolicyResponse> policesResponse = policyService.getAllPolicies(pageable);
-        return ApiResponseDTO.success(policesResponse, "Policies retrieved successfully");
+        PageResponse<PolicyResponse> policesResponse = policyService.getAllPolicies(pageable);
+        return ResponseEntity.ok(ApiResponseDTO.success("Policies retrieved successfully",policesResponse));
     }
 
     @PutMapping("/{id}/renew")
@@ -135,9 +135,9 @@ public class PolicyController {
                     content = @Content(schema = @Schema(implementation = ApiError.class),
                             examples = @ExampleObject(value = "{\"timestamp\":\"2025-02-09T12:00:00Z\",\"status\":500,\"error\":\"Internal Server Error\",\"message\":\"Unexpected error\",\"path\":\"/policy/1/cancel\",\"traceId\":null,\"details\":{}}")))
     })
-    public ResponseEntity<ApiResponseDTO<Void>> cancelPolicy(
+    public ResponseEntity<ApiResponseDTO<PolicyResponse>> cancelPolicy(
             @Parameter(description = "Policy ID to cancel", example = "1", required = true) @PathVariable Long id) {
-        policyService.cancelPolicy(id);
-        return ResponseEntity.ok(ApiResponseDTO.success("Policy cancelled successfully!", null));
+        PolicyResponse response = policyService.cancelPolicy(id);
+        return ResponseEntity.ok(ApiResponseDTO.success("Policy cancelled successfully!", response));
     }
 }
