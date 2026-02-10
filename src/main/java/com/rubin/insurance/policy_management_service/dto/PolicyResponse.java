@@ -27,4 +27,6 @@ public class PolicyResponse {
     private LocalDate startDate;
     @Schema(description = "Policy end date", example = "2026-01-01")
     private LocalDate endDate;
+    @Schema(description = "Policy status", example = "ACTIVE")
+    private String status;
 }
