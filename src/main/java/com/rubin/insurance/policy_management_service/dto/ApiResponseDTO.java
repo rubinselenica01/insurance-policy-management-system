@@ -6,8 +6,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.http.ResponseEntity;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -44,7 +42,8 @@ public class ApiResponseDTO<T> {
     @Schema(description = "ISO formatted timestamp when the response was created", example = "2025-02-09T10:30:00")
     private String timestamp;
 
-    @Schema(description = "Response payload (policy, claim, list, or pagination data)")
+    @Schema(description = "Response payload (policy, claim, list, or pagination data)",
+            oneOf = {PolicyResponse.class, ClaimResponse.class, PageResponse.class})
     @JsonInclude(JsonInclude.Include.ALWAYS)
     private T data;
 
@@ -67,11 +66,6 @@ public class ApiResponseDTO<T> {
         return new ApiResponseDTO<>("SUCCESS", message, data);
     }
 
-
-    public static <T> ResponseEntity<ApiResponseDTO<PageResponse<T>>> success(Page<T> page, String message){
-        PageResponse<T> pageResponse = new PageResponse<>(page);
-        return ResponseEntity.ok(ApiResponseDTO.success(message, pageResponse));
-    }
 
 
 }
