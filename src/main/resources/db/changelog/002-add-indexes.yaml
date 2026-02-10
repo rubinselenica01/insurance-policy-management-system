@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-add-indexes-policy-claim
+      author: rubinselenica01
+      changes:
+        - createIndex:
+            tableName: policies
+            indexName: idx_policy_customer_email
+            columns:
+              - column:
+                  name: customer_email
+        - createIndex:
+            tableName: policies
+            indexName: idx_policy_status
+            columns:
+              - column:
+                  name: status
+        - createIndex:
+            tableName: claims
+            indexName: idx_claim_policy_id
+            columns:
+              - column:
+                  name: policy_id
+        - createIndex:
+            tableName: claims
+            indexName: idx_claim_status
+            columns:
+              - column:
+                  name: status
