@@ -36,7 +36,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public ClaimResponse createClaim(ClaimRequest claimRequest) {
-        Policy existingPolicy = policyRepository.findById(claimRequest.getPolicyId())
+        Policy existingPolicy = policyRepository.findById(claimRequest.policyId())
                 .orElseThrow(() -> new NotFoundException("Policy not found"));
         validateClaim(existingPolicy, claimRequest);
 
@@ -97,9 +97,9 @@ public class ClaimServiceImpl implements ClaimService {
     private void validateClaim(Policy existingPolicy, ClaimRequest claimRequest){
         if(!existingPolicy.getStatus().equals(PolicyStatus.ACTIVE)){
             throw new BusinessException("Claims can be submitted only for ACTIVE policies");
-        }else if(claimRequest.getClaimAmount().compareTo(existingPolicy.getCoverageAmount()) == 1){
+        }else if(claimRequest.claimAmount().compareTo(existingPolicy.getCoverageAmount()) == 1){
             throw new BusinessException("Claim amount cannot exceed policy coverage amount!");
-        }else if(!(claimRequest.getIncidentDate().isAfter(existingPolicy.getStartDate()) && claimRequest.getIncidentDate().isBefore(existingPolicy.getEndDate()))){
+        }else if(!(claimRequest.incidentDate().isAfter(existingPolicy.getStartDate()) && claimRequest.incidentDate().isBefore(existingPolicy.getEndDate()))){
             throw new BusinessException("Incident date should be between policy valid date!");
         }
     }

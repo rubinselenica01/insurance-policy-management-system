@@ -10,9 +10,9 @@ public class PremiumAmountValidator implements ConstraintValidator<PremiumAmount
     public boolean isValid(PolicyRequest req, ConstraintValidatorContext ctx) {
         if (req == null) return true;
 
-        if (req.getCoverageAmount() == null || req.getPremiumAmount() == null) return true;
+        if (req.coverageAmount() == null || req.premiumAmount() == null) return true;
 
-        if (req.getCoverageAmount().compareTo(req.getPremiumAmount()) <= 0) {
+        if (req.coverageAmount().compareTo(req.premiumAmount()) <= 0) {
             ctx.disableDefaultConstraintViolation();
             ctx.buildConstraintViolationWithTemplate("Coverage Amount must be greater than Premium Amount")
                .addPropertyNode("coverageAmount")
