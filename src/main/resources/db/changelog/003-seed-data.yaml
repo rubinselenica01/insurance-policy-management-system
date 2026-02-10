@@ -1,0 +1,213 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-seed-data
+      author: system
+      changes:
+        # Policies (5 total; 4 ACTIVE, 1 CANCELLED with no claims)
+        - insert:
+            tableName: policies
+            columns:
+              - column: { name: id, valueNumeric: 1 }
+              - column: { name: policy_number, value: "POL-2025-000001" }
+              - column: { name: customer_name, value: "John Smith" }
+              - column: { name: customer_email, value: "john.smith@example.com" }
+              - column: { name: policy_type, value: "HEALTH" }
+              - column: { name: coverage_amount, valueNumeric: 100000.00 }
+              - column: { name: premium_amount, valueNumeric: 1500.00 }
+              - column: { name: start_date, valueDate: 2025-01-01 }
+              - column: { name: end_date, valueDate: 2026-01-01 }
+              - column: { name: status, value: "ACTIVE" }
+              - column: { name: created_at, valueDate: 2025-01-01T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-01-01T00:00:00Z }
+        - insert:
+            tableName: policies
+            columns:
+              - column: { name: id, valueNumeric: 2 }
+              - column: { name: policy_number, value: "POL-2025-000002" }
+              - column: { name: customer_name, value: "Alice Johnson" }
+              - column: { name: customer_email, value: "alice.johnson@example.com" }
+              - column: { name: policy_type, value: "AUTO" }
+              - column: { name: coverage_amount, valueNumeric: 200000.00 }
+              - column: { name: premium_amount, valueNumeric: 2000.00 }
+              - column: { name: start_date, valueDate: 2025-03-01 }
+              - column: { name: end_date, valueDate: 2026-03-01 }
+              - column: { name: status, value: "ACTIVE" }
+              - column: { name: created_at, valueDate: 2025-03-01T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-03-01T00:00:00Z }
+        - insert:
+            tableName: policies
+            columns:
+              - column: { name: id, valueNumeric: 3 }
+              - column: { name: policy_number, value: "POL-2025-000003" }
+              - column: { name: customer_name, value: "Michael Lee" }
+              - column: { name: customer_email, value: "michael.lee@example.com" }
+              - column: { name: policy_type, value: "HOME" }
+              - column: { name: coverage_amount, valueNumeric: 150000.00 }
+              - column: { name: premium_amount, valueNumeric: 1800.00 }
+              - column: { name: start_date, valueDate: 2025-04-15 }
+              - column: { name: end_date, valueDate: 2026-04-15 }
+              - column: { name: status, value: "ACTIVE" }
+              - column: { name: created_at, valueDate: 2025-04-15T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-04-15T00:00:00Z }
+        - insert:
+            tableName: policies
+            columns:
+              - column: { name: id, valueNumeric: 4 }
+              - column: { name: policy_number, value: "POL-2025-000004" }
+              - column: { name: customer_name, value: "Sara Davis" }
+              - column: { name: customer_email, value: "sara.davis@example.com" }
+              - column: { name: policy_type, value: "LIFE" }
+              - column: { name: coverage_amount, valueNumeric: 75000.00 }
+              - column: { name: premium_amount, valueNumeric: 900.00 }
+              - column: { name: start_date, valueDate: 2025-05-01 }
+              - column: { name: end_date, valueDate: 2026-05-01 }
+              - column: { name: status, value: "ACTIVE" }
+              - column: { name: created_at, valueDate: 2025-05-01T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-05-01T00:00:00Z }
+        - insert:
+            tableName: policies
+            columns:
+              - column: { name: id, valueNumeric: 5 }
+              - column: { name: policy_number, value: "POL-2025-000005" }
+              - column: { name: customer_name, value: "Daniel Green" }
+              - column: { name: customer_email, value: "daniel.green@example.com" }
+              - column: { name: policy_type, value: "AUTO" }
+              - column: { name: coverage_amount, valueNumeric: 50000.00 }
+              - column: { name: premium_amount, valueNumeric: 700.00 }
+              - column: { name: start_date, valueDate: 2025-01-15 }
+              - column: { name: end_date, valueDate: 2025-09-15 }
+              - column: { name: status, value: "CANCELLED" }
+              - column: { name: created_at, valueDate: 2025-01-15T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-01-15T00:00:00Z }
+
+        # Claims (10 total; only for ACTIVE policies 1-4; amounts <= coverage; incident within policy dates)
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 1 }
+              - column: { name: policy_id, valueNumeric: 1 }
+              - column: { name: claim_number, value: "CLM-2025-000001" }
+              - column: { name: description, value: "Hospitalization costs" }
+              - column: { name: claim_amount, valueNumeric: 5000.00 }
+              - column: { name: incident_date, valueDate: 2025-02-01 }
+              - column: { name: status, value: "SUBMITTED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-02-02T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-02-02T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 2 }
+              - column: { name: policy_id, valueNumeric: 1 }
+              - column: { name: claim_number, value: "CLM-2025-000002" }
+              - column: { name: description, value: "Specialist consultation" }
+              - column: { name: claim_amount, valueNumeric: 12000.00 }
+              - column: { name: incident_date, valueDate: 2025-03-10 }
+              - column: { name: status, value: "APPROVED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-03-11T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-03-11T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 3 }
+              - column: { name: policy_id, valueNumeric: 1 }
+              - column: { name: claim_number, value: "CLM-2025-000003" }
+              - column: { name: description, value: "Rehabilitation therapy" }
+              - column: { name: claim_amount, valueNumeric: 8000.00 }
+              - column: { name: incident_date, valueDate: 2025-04-05 }
+              - column: { name: status, value: "REJECTED" }
+              - column: { name: rejection_reason, value: "Insufficient documentation" }
+              - column: { name: created_at, valueDate: 2025-04-06T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-04-06T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 4 }
+              - column: { name: policy_id, valueNumeric: 2 }
+              - column: { name: claim_number, value: "CLM-2025-000004" }
+              - column: { name: description, value: "Rear bumper replacement" }
+              - column: { name: claim_amount, valueNumeric: 6000.00 }
+              - column: { name: incident_date, valueDate: 2025-05-20 }
+              - column: { name: status, value: "SUBMITTED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-05-21T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-05-21T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 5 }
+              - column: { name: policy_id, valueNumeric: 2 }
+              - column: { name: claim_number, value: "CLM-2025-000005" }
+              - column: { name: description, value: "Windshield repair" }
+              - column: { name: claim_amount, valueNumeric: 2000.00 }
+              - column: { name: incident_date, valueDate: 2025-06-10 }
+              - column: { name: status, value: "APPROVED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-06-11T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-06-11T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 6 }
+              - column: { name: policy_id, valueNumeric: 2 }
+              - column: { name: claim_number, value: "CLM-2025-000006" }
+              - column: { name: description, value: "Minor body repair" }
+              - column: { name: claim_amount, valueNumeric: 3500.00 }
+              - column: { name: incident_date, valueDate: 2025-07-15 }
+              - column: { name: status, value: "REJECTED" }
+              - column: { name: rejection_reason, value: "Coverage exclusion" }
+              - column: { name: created_at, valueDate: 2025-07-16T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-07-16T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 7 }
+              - column: { name: policy_id, valueNumeric: 3 }
+              - column: { name: claim_number, value: "CLM-2025-000007" }
+              - column: { name: description, value: "Roof repair from storm" }
+              - column: { name: claim_amount, valueNumeric: 25000.00 }
+              - column: { name: incident_date, valueDate: 2025-08-01 }
+              - column: { name: status, value: "SUBMITTED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-08-02T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-08-02T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 8 }
+              - column: { name: policy_id, valueNumeric: 3 }
+              - column: { name: claim_number, value: "CLM-2025-000008" }
+              - column: { name: description, value: "Water damage remediation" }
+              - column: { name: claim_amount, valueNumeric: 40000.00 }
+              - column: { name: incident_date, valueDate: 2025-09-12 }
+              - column: { name: status, value: "APPROVED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-09-13T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-09-13T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 9 }
+              - column: { name: policy_id, valueNumeric: 4 }
+              - column: { name: claim_number, value: "CLM-2025-000009" }
+              - column: { name: description, value: "Routine checkup reimbursement" }
+              - column: { name: claim_amount, valueNumeric: 500.00 }
+              - column: { name: incident_date, valueDate: 2025-06-05 }
+              - column: { name: status, value: "SUBMITTED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-06-06T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-06-06T00:00:00Z }
+        - insert:
+            tableName: claims
+            columns:
+              - column: { name: id, valueNumeric: 10 }
+              - column: { name: policy_id, valueNumeric: 4 }
+              - column: { name: claim_number, value: "CLM-2025-000010" }
+              - column: { name: description, value: "Prescription reimbursement" }
+              - column: { name: claim_amount, valueNumeric: 300.00 }
+              - column: { name: incident_date, valueDate: 2025-07-22 }
+              - column: { name: status, value: "APPROVED" }
+              - column: { name: rejection_reason, value: null }
+              - column: { name: created_at, valueDate: 2025-07-23T00:00:00Z }
+              - column: { name: updated_at, valueDate: 2025-07-23T00:00:00Z }

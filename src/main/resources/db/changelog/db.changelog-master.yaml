@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/001-create-schema.yaml
   - include:
       file: db/changelog/002-add-indexes.yaml
+  - include:
+      file: db/changelog/003-seed-data.yaml
