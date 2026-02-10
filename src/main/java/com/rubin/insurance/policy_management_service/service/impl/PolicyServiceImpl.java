@@ -39,6 +39,7 @@ public class PolicyServiceImpl implements PolicyService {
             evict = @CacheEvict(value = CACHE_POLICY_PAGE, allEntries = true)
     )
     public PolicyResponse savePolicy(PolicyRequest policy) {
+        log.info("savePolicy called for customerEmail={} policyType={}", policy.customerEmail(), policy.policyType());
         Policy mapped = policyMapper.toEntity(policy);
         Policy saved =  policyRepository.save(mapped);
         policyEventPublisher.publish(PolicyEventType.POLICY_CREATED, saved);
@@ -48,6 +49,7 @@ public class PolicyServiceImpl implements PolicyService {
     @Override
     @Cacheable(value = CACHE_POLICY_BY_ID, key = "#id")
     public PolicyResponse getById(Long id) {
+        log.info("getById called with id={}", id);
         Policy existing = reusableGetById(id);
         return policyMapper.toDto(existing);
     }
@@ -58,6 +60,8 @@ public class PolicyServiceImpl implements PolicyService {
             key = "T(java.lang.String).format('p=%s_s=%s_sort=%s', #pageable.pageNumber, #pageable.pageSize, #pageable.sort.toString())"
     )
     public PageResponse<PolicyResponse> getAllPolicies(Pageable pageable) {
+        log.info("getAllPolicies called with page={} size={} sort={}",
+                pageable.getPageNumber(), pageable.getPageSize(), pageable.getSort());
         Page<Policy> existingPage = policyRepository.findAll(pageable);
         return new PageResponse<>(existingPage.map(policyMapper::toDto));
     }
@@ -69,6 +73,7 @@ public class PolicyServiceImpl implements PolicyService {
             evict = @CacheEvict(value = CACHE_POLICY_PAGE, allEntries = true)
     )
     public PolicyResponse renewPolicy(Long id) {
+        log.info("renewPolicy called with id={}", id);
         Policy existing = reusableGetById(id);
         existing.renew();
         Policy updated = policyRepository.save(existing);
@@ -83,6 +88,7 @@ public class PolicyServiceImpl implements PolicyService {
             evict = @CacheEvict(value = CACHE_POLICY_PAGE, allEntries = true)
     )
     public PolicyResponse cancelPolicy(Long id) {
+        log.info("cancelPolicy called with id={}", id);
         Policy existing = reusableGetById(id);
         existing.cancel();
         Policy updated = policyRepository.save(existing);
@@ -91,6 +97,7 @@ public class PolicyServiceImpl implements PolicyService {
     }
 
     private Policy reusableGetById(Long id){
+        log.debug("reusableGetById called with id={}", id);
         return policyRepository.findById(id).orElseThrow(() -> new NotFoundException("Policy not found"));
     }
 

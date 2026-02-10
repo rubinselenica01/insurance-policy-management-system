@@ -36,6 +36,7 @@ public class ClaimServiceImpl implements ClaimService {
     @Override
     @Transactional
     public ClaimResponse createClaim(ClaimRequest claimRequest) {
+        log.info("createClaim called for policyId={}", claimRequest.policyId());
         Policy existingPolicy = policyRepository.findById(claimRequest.policyId())
                 .orElseThrow(() -> new NotFoundException("Policy not found"));
         validateClaim(existingPolicy, claimRequest);
@@ -52,12 +53,14 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public ClaimResponse getClaimById(Long id) {
+        log.info("getClaimById called with id={}", id);
         Claim existing =  reusableGetById(id);
         return claimMapper.toDTO(existing);
     }
 
     @Override
     public List<ClaimResponse> getClaimsByPolicyId(Long policyId) {
+        log.info("getClaimsByPolicyId called with policyId={}", policyId);
         List<Claim> claimsList = claimRepository.findClaimsByPolicyId(policyId);
         if (claimsList.isEmpty() && !policyRepository.existsById(policyId)) {
             throw new NotFoundException(String.format("Policy with id %d not found", policyId));
@@ -69,6 +72,7 @@ public class ClaimServiceImpl implements ClaimService {
 
     @Override
     public ClaimResponse updateStatus(Long id, UpdateClaimStatusDTO updateClaimStatusDTO) {
+        log.info("updateStatus called with id={} status={}", id, updateClaimStatusDTO.claimStatus());
         Claim existing = reusableGetById(id);
 
         if (updateClaimStatusDTO.claimStatus().equals(ClaimStatus.REJECTED)){
@@ -91,10 +95,13 @@ public class ClaimServiceImpl implements ClaimService {
     }
 
     private Claim reusableGetById(Long id){
+        log.debug("reusableGetById called with id={}", id);
         return claimRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Claim not found"));
     }
     private void validateClaim(Policy existingPolicy, ClaimRequest claimRequest){
+        log.debug("validateClaim called for policyId={} claimAmount={}",
+                existingPolicy.getId(), claimRequest.claimAmount());
         if(!existingPolicy.getStatus().equals(PolicyStatus.ACTIVE)){
             throw new BusinessException("Claims can be submitted only for ACTIVE policies");
         }else if(claimRequest.claimAmount().compareTo(existingPolicy.getCoverageAmount()) == 1){
