@@ -9,6 +9,8 @@ This is a REST API for managing insurance policies and claims. You can create an
 - **Java 21**
 - **Spring Boot 4** – Web, Validation, JPA, Data Redis, Kafka
 - **PostgreSQL** – Primary database
+- **Redis** - Cache-aside pattern
+- **Kafka** - event broker
 - **Liquibase** – Database migrations (schema + sample data on startup)
 - **SpringDoc OpenAPI (Swagger)** – API documentation and Swagger UI
 - **MapStruct** – DTO mapping
