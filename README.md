@@ -38,40 +38,41 @@ Never commit `.env`; only `.env.example` (without secrets) should be in version 
 
 ## Environment variables needed
 
-| Variable           | Description                                      | Example (local)                              |
-|--------------------|--------------------------------------------------|----------------------------------------------|
-| `POSTGRES_URL`     | JDBC URL for the PostgreSQL database             | `jdbc:postgresql://localhost:5432/insurance_db` |
-| `POSTGRES_USER`    | Database username                                | `your_db_user`                               |
-| `POSTGRES_PASSWORD`| Database password                                | `your_db_password`                           |
-
-These are the variables referenced in `application.yaml`.
+| Variable               | Description                                      | Example (local)                                 |
+|------------------------|--------------------------------------------------|-------------------------------------------------|
+| `POSTGRES_URL`         | JDBC URL for PostgreSQL                          | `jdbc:postgresql://localhost:5432/insurance_db` |
+| `POSTGRES_USER`        | Database username                                | `your_db_user`                                  |
+| `POSTGRES_PASSWORD`    | Database password                                | `your_db_password`                              |
+| `KAFKA_BOOTSTRAP_SERVERS` | Kafka bootstrap address                       | `localhost:9094`                                |
+| `REDIS_HOST`           | Redis host                                       | `localhost`                                     |
+| `REDIS_PORT`           | Redis port                                       | `6379`                                          |
+| `REDIS_PASSWORD`       | Redis password (required; compose enforces it)   | `your_redis_password`                           |
 
 ## Docker setup and run instructions
 
-### Start PostgreSQL only
+### Start the stack (Postgres, Redis, Kafka)
 
-To run the database with Docker (e.g. for local development):
+1) Ensure `.env` is present (copied from `.env.example`) and set the vars as you wish
+
+2) Bring up the services:
 
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
-This starts a PostgreSQL 15 container:
-
-- **Container name:** `insurance-postgres`
-- **Port:** `5432`
-- **Database:** `insurance_db`
-- **Credentials:** Set in `docker-compose.yml` (e.g. user/password). Ensure your `.env` matches the URL and credentials you use to connect from the app (e.g. `POSTGRES_URL=jdbc:postgresql://localhost:5432/insurance_db`, `POSTGRES_USER`, `POSTGRES_PASSWORD`).
+This starts:
+- **PostgreSQL** on `5432` (`insurance-postgres`)
+- **Redis** on `6379` with `--requirepass` from `REDIS_PASSWORD` (`insurance-redis`)
+- **Kafka** on `9094` (PLAINTEXT_HOST) (`insurance-kafka`)
 
 To stop:
-
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Run the application
 
-1. Ensure PostgreSQL is running (e.g. via `docker-compose up -d`) and `.env` is configured.
+1. Ensure the stack is running (Postgres/Redis/Kafka via `docker compose up -d`) and `.env` is configured.
 2. Load the environment variables (see [Environment variables and configuration guide](#environment-variables-and-configuration-guide)).
 3. Start the Spring Boot app:
 
