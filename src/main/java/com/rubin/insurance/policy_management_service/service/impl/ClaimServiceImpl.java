@@ -5,7 +5,9 @@ import com.rubin.insurance.policy_management_service.configuration.exception_han
 import com.rubin.insurance.policy_management_service.dto.ClaimRequest;
 import com.rubin.insurance.policy_management_service.dto.ClaimResponse;
 import com.rubin.insurance.policy_management_service.dto.UpdateClaimStatusDTO;
+import com.rubin.insurance.policy_management_service.events.ClaimEventType;
 import com.rubin.insurance.policy_management_service.mapper.ClaimMapper;
+import com.rubin.insurance.policy_management_service.messaging.ClaimEventPublisher;
 import com.rubin.insurance.policy_management_service.model.claim.Claim;
 import com.rubin.insurance.policy_management_service.model.claim.ClaimStatus;
 import com.rubin.insurance.policy_management_service.model.policy.Policy;
@@ -29,6 +31,7 @@ public class ClaimServiceImpl implements ClaimService {
     private final ClaimMapper claimMapper;
     private final ClaimRepository claimRepository;
     private final PolicyRepository policyRepository;
+    private final ClaimEventPublisher claimEventPublisher;
 
     @Override
     @Transactional
@@ -41,6 +44,8 @@ public class ClaimServiceImpl implements ClaimService {
         claim.setPolicy(existingPolicy);
 
         Claim saved = claimRepository.save(claim);
+
+        claimEventPublisher.publish(ClaimEventType.CLAIM_SUBMITTED, saved);
 
         return claimMapper.toDTO(saved);
     }
@@ -75,6 +80,13 @@ public class ClaimServiceImpl implements ClaimService {
 
         existing.setStatus(updateClaimStatusDTO.claimStatus());
         Claim saved = claimRepository.save(existing);
+
+        if (saved.getStatus() == ClaimStatus.APPROVED) {
+            claimEventPublisher.publish(ClaimEventType.CLAIM_APPROVED, saved);
+        } else if (saved.getStatus() == ClaimStatus.REJECTED) {
+            claimEventPublisher.publish(ClaimEventType.CLAIM_REJECTED, saved);
+        }
+
         return claimMapper.toDTO(saved);
     }
 
