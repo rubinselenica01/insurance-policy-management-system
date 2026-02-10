@@ -3,7 +3,9 @@ package com.rubin.insurance.policy_management_service.service.impl;
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.NotFoundException;
 import com.rubin.insurance.policy_management_service.dto.PolicyRequest;
 import com.rubin.insurance.policy_management_service.dto.PolicyResponse;
+import com.rubin.insurance.policy_management_service.events.PolicyEventType;
 import com.rubin.insurance.policy_management_service.mapper.PolicyMapper;
+import com.rubin.insurance.policy_management_service.messaging.PolicyEventPublisher;
 import com.rubin.insurance.policy_management_service.model.policy.Policy;
 import com.rubin.insurance.policy_management_service.repository.PolicyRepository;
 import com.rubin.insurance.policy_management_service.service.PolicyService;
@@ -21,11 +23,13 @@ public class PolicyServiceImpl implements PolicyService {
 
     private final PolicyRepository policyRepository;
     private final PolicyMapper policyMapper;
+    private final PolicyEventPublisher policyEventPublisher;
 
     @Override
     public PolicyResponse savePolicy(PolicyRequest policy) {
         Policy mapped = policyMapper.toEntity(policy);
         Policy saved =  policyRepository.save(mapped);
+        policyEventPublisher.publish(PolicyEventType.POLICY_CREATED, saved);
         return policyMapper.toDto(saved);
     }
 
@@ -47,21 +51,20 @@ public class PolicyServiceImpl implements PolicyService {
         Policy existing = reusableGetById(id);
         existing.renew();
         Policy updated = policyRepository.save(existing);
+        policyEventPublisher.publish(PolicyEventType.POLICY_RENEWED, updated);
         return policyMapper.toDto(updated);
     }
 
     @Transactional
-    @Override
     public void cancelPolicy(Long id) {
         Policy existing = reusableGetById(id);
         existing.cancel();
         Policy updated = policyRepository.save(existing);
-        policyMapper.toDto(updated);
+        policyEventPublisher.publish(PolicyEventType.POLICY_CANCELLED, updated);
     }
 
     private Policy reusableGetById(Long id){
         return policyRepository.findById(id).orElseThrow(() -> new NotFoundException("Policy not found"));
     }
-
 
 }
