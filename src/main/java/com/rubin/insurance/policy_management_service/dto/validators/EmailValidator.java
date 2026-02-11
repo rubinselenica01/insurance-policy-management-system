@@ -5,7 +5,8 @@ import jakarta.validation.ConstraintValidatorContext;
 
 public class EmailValidator implements ConstraintValidator<Email, String> {
 
-    private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+    // Email must start with alphanumeric, not with dot or special character
+    private static final String EMAIL_REGEX = "^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
 
 
     @Override
