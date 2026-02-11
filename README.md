@@ -11,6 +11,7 @@ This is a REST API for managing insurance policies and claims. You can create an
 - **PostgreSQL** – Primary database
 - **Redis** - Cache-aside pattern
 - **Kafka** - event broker
+- **AWS SES** - email delivery
 - **Liquibase** – Database migrations (schema + sample data on startup)
 - **SpringDoc OpenAPI (Swagger)** – API documentation and Swagger UI
 - **MapStruct** – DTO mapping
@@ -50,6 +51,46 @@ Never commit `.env`; only `.env.example` (without secrets) should be in version 
 | `REDIS_HOST`           | Redis host                                       | `localhost`                                     |
 | `REDIS_PORT`           | Redis port                                       | `6379`                                          |
 | `REDIS_PASSWORD`       | Redis password (required; compose enforces it)   | `your_redis_password`                           |
+| `AWS_SES_REGION`       | AWS region where SES is enabled                  | `eu-central-1`                                  |
+| `AWS_SES_FROM_EMAIL`   | Verified SES sender email/domain address         | `no-reply@your-domain.com`                      |
+| `AWS_ACCESS_KEY_ID`    | IAM access key ID (programmatic access)          | `AKIA...`                                       |
+| `AWS_SECRET_ACCESS_KEY`| IAM secret key for the access key ID             | `...`                                           |
+
+## AWS SES configuration steps
+
+1. Log into AWS and choose the same region you set in `AWS_SES_REGION`.
+2. Open Amazon SES and verify your sender identity:
+   - verify an email address (quick start)
+3. If your account is in the SES sandbox, verify recipient addresses too.
+4. Request production access in SES when you need to email unverified recipients.
+5. Create an IAM user (or role) with SES send permissions only.
+6. Attach a policy such as:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": [
+        "ses:SendEmail",
+        "ses:SendRawEmail"
+      ],
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+7. Create an access key for that IAM user and set:
+   - `AWS_ACCESS_KEY_ID`
+   - `AWS_SECRET_ACCESS_KEY`
+8. Set `AWS_SES_FROM_EMAIL` to a verified sender.
+
+### Credentials options
+
+- You can set `AWS_ACCESS_KEY_ID` and `AWS_SECRET_ACCESS_KEY` directly in your environment.
+- If those are not provided, the application falls back to the AWS default credential chain (for example EC2/ECS/EKS role credentials, or your local AWS profile/session).
 
 ## Docker setup and run instructions
 
