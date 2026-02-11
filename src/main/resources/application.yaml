@@ -52,3 +52,10 @@ springdoc:
     path: /swagger-ui.html
     operationsSorter: method
     tagsSorter: alpha
+
+aws:
+  ses:
+    region: ${AWS_SES_REGION}
+    from-email: ${AWS_SES_FROM_EMAIL}
+    access-key-id: ${AWS_ACCESS_KEY_ID}
+    secret-access-key: ${AWS_SECRET_ACCESS_KEY}
