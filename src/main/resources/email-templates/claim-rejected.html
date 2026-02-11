@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claim Status Update</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            background-color: #dc3545;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .content {
+            background-color: #f9f9f9;
+            padding: 30px;
+            border: 1px solid #ddd;
+        }
+        .claim-details {
+            background-color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #dc3545;
+        }
+        .detail-row {
+            margin: 10px 0;
+        }
+        .label {
+            font-weight: bold;
+            color: #dc3545;
+        }
+        .reason-box {
+            background-color: #f8d7da;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+        .info-box {
+            background-color: #d1ecf1;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .footer {
+            background-color: #333;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 0 0 5px 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Claim Status Update</h1>
+    </div>
+    <div class="content">
+        <h2>Dear Valued Customer,</h2>
+        <p>We have completed the review of your insurance claim. Unfortunately, we are unable to approve your claim at this time.</p>
+        
+        <div class="claim-details">
+            <h3>Claim Details</h3>
+            <div class="detail-row">
+                <span class="label">Claim Number:</span> {{claimNumber}}
+            </div>
+            <div class="detail-row">
+                <span class="label">Policy ID:</span> {{policyId}}
+            </div>
+            <div class="detail-row">
+                <span class="label">Claim Amount:</span> ${{claimAmount}}
+            </div>
+            <div class="detail-row">
+                <span class="label">Incident Date:</span> {{incidentDate}}
+            </div>
+            <div class="detail-row">
+                <span class="label">Status:</span> {{status}}
+            </div>
+        </div>
+        
+        <div class="reason-box">
+            <h3>Reason for Rejection</h3>
+            <p>{{rejectionReason}}</p>
+        </div>
+        
+        <div class="info-box">
+            <h3>What You Can Do</h3>
+            <p>If you believe this decision was made in error or if you have additional documentation to support your claim, you have the following options:</p>
+            <ul>
+                <li>Submit an appeal with additional supporting documents</li>
+                <li>Contact our claims department for clarification</li>
+                <li>Request a detailed explanation of the decision</li>
+            </ul>
+        </div>
+        
+        <p>We understand this may be disappointing news. Our claims team is available to discuss this decision and answer any questions you may have.</p>
+        
+        <p><strong>Contact Information:</strong><br>
+        Claims Department: claims@insurance.com<br>
+        Phone: 1-800-CLAIMS</p>
+        
+        <p>Thank you for your understanding.</p>
+        
+        <p>Best regards,<br>
+        <strong>Claims Processing Team</strong></p>
+    </div>
+    <div class="footer">
+        <p>&copy; 2026 Insurance Policy Management System. All rights reserved.</p>
+        <p>This is an automated email. Please do not reply to this message.</p>
+    </div>
+</body>
+</html>
