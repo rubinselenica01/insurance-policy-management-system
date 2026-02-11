@@ -84,18 +84,18 @@ public class EmailServiceImpl implements EmailService {
             htmlContent = replaceClaimPlaceholders(htmlContent, payload);
 
             String subject = switch (eventType) {
-                case CLAIM_APPROVED -> "Claim Approved - " + payload.getClaimNumber();
-                case CLAIM_REJECTED -> "Claim Status Update - " + payload.getClaimNumber();
-                default -> "Claim Update - " + payload.getClaimNumber();
+                case CLAIM_APPROVED -> "Claim Approved - " + payload.claimNumber();
+                case CLAIM_REJECTED -> "Claim Status Update - " + payload.claimNumber();
+                default -> "Claim Update - " + payload.claimNumber();
             };
 
-            sendEmail(payload.getCustomerEmail(), subject, htmlContent);
+            sendEmail(payload.customerEmail(), subject, htmlContent);
 
             log.info("{} email sent successfully to {} for claim {}", 
-                eventType, payload.getCustomerEmail(), payload.getClaimNumber());
+                eventType, payload.customerEmail(), payload.claimNumber());
         } catch (Exception e) {
             log.error("Failed to send {} email for claim {}: {}", 
-                eventType, payload.getClaimNumber(), e.getMessage(), e);
+                eventType, payload.claimNumber(), e.getMessage(), e);
             // Don't throw - handle gracefully as per requirements
         }
     }
@@ -157,15 +157,15 @@ public class EmailServiceImpl implements EmailService {
 
     private String replaceClaimPlaceholders(String template, ClaimEventPayload payload) {
         String result = template
-            .replace("{{claimNumber}}", payload.getClaimNumber())
-            .replace("{{policyId}}", payload.getPolicyId().toString())
-            .replace("{{claimAmount}}", payload.getClaimAmount().toString())
-            .replace("{{incidentDate}}", payload.getIncidentDate().toString())
-            .replace("{{status}}", payload.getStatus().toString());
+            .replace("{{claimNumber}}", payload.claimNumber())
+            .replace("{{policyId}}", payload.policyId().toString())
+            .replace("{{claimAmount}}", payload.claimAmount().toString())
+            .replace("{{incidentDate}}", payload.incidentDate().toString())
+            .replace("{{status}}", payload.status().toString());
 
         // Handle optional rejection reason
-        if (payload.getRejectionReason() != null && !payload.getRejectionReason().isEmpty()) {
-            result = result.replace("{{rejectionReason}}", payload.getRejectionReason());
+        if (payload.rejectionReason() != null && !payload.rejectionReason().isEmpty()) {
+            result = result.replace("{{rejectionReason}}", payload.rejectionReason());
         } else {
             result = result.replace("{{rejectionReason}}", "Not specified");
         }
