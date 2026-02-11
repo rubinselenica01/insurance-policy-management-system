@@ -12,10 +12,15 @@ This is a REST API for managing insurance policies and claims. You can create an
 - **Redis** - Cache-aside pattern
 - **Kafka** - event broker
 - **AWS SES** - email delivery
+
+## Other Libraries
 - **Liquibase** – Database migrations (schema + sample data on startup)
 - **SpringDoc OpenAPI (Swagger)** – API documentation and Swagger UI
 - **MapStruct** – DTO mapping
 - **Lombok** – Boilerplate reduction
+- **AWS SES SDK V2** - Email Sending 
+- **Swagger/OpenAPI** - API documentation)
+- **Spring Validation** - Annotations
 
 ## Prerequisites
 
@@ -86,6 +91,58 @@ Never commit `.env`; only `.env.example` (without secrets) should be in version 
    - `AWS_ACCESS_KEY_ID`
    - `AWS_SECRET_ACCESS_KEY`
 8. Set `AWS_SES_FROM_EMAIL` to a verified sender.
+
+## SES sandbox limitations and testing
+
+### Sandbox restrictions
+
+New AWS accounts start in **SES sandbox mode** with these limitations:
+
+- Can **only send to verified email addresses**
+- Maximum 200 emails per day
+- Maximum 1 email per second
+- Cannot send to unverified recipients
+
+Production access removes these restrictions.
+
+### Verifying email addresses for testing
+
+**Check sandbox status:**
+1. Go to Amazon SES → **Account dashboard**
+2. Look for "Your Amazon SES account is in the sandbox" message
+
+**Verify sender email:**
+1. Go to **Verified identities** → **Create identity**
+2. Select **Email address** and enter your `AWS_SES_FROM_EMAIL`
+3. Click the verification link sent to that address
+
+**Verify recipient emails for testing:**
+1. Go to **Verified identities** → **Create identity**
+2. Select **Email address** and enter the test recipient (e.g., `yourtest@gmail.com`)
+3. Recipient must click the verification link in their email
+4. Repeat for each test email address
+
+**Test:**
+```bash
+# Create a policy - triggers email to verified address
+curl -X POST http://localhost:8080/api/v1/policies \
+  -H "Content-Type: application/json" \
+  -d '{
+    "policyType": "HEALTH",
+    "policyHolderEmail": "yourtest@gmail.com",
+    "premiumAmount": 150.00,
+    "coverageAmount": 50000.00
+  }'
+```
+
+If the email isn't verified, you'll see: `MessageRejected: Email address is not verified`
+
+### Moving to production
+
+1. Go to **Account dashboard** → **Request production access**
+2. Select "Transactional" mail type
+3. Describe your use case (policy/claim notifications)
+4. Submit (typically approved within 24 hours)
 
 ### Credentials options
 
