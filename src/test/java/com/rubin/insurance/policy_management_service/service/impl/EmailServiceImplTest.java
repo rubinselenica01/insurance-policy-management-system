@@ -22,8 +22,7 @@ import software.amazon.awssdk.services.ses.model.SendEmailResponse;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -84,12 +83,12 @@ class EmailServiceImplTest {
         verify(sesClient, times(1)).sendEmail(requestCaptor.capture());
 
         SendEmailRequest capturedRequest = requestCaptor.getValue();
-        assertThat(capturedRequest.source()).isEqualTo("noreply@insurance.com");
-        assertThat(capturedRequest.destination().toAddresses()).contains("rubin.selenica@fshnstudent.info");
-        assertThat(capturedRequest.message().subject().data()).contains("POL-2024-001");
-        assertThat(capturedRequest.message().body().html().data()).contains("POL-2024-001");
-        assertThat(capturedRequest.message().body().html().data()).contains("HEALTH");
-        assertThat(capturedRequest.message().body().html().data()).contains("100000.00");
+        assertEquals("noreply@insurance.com", capturedRequest.source());
+        assertTrue(capturedRequest.destination().toAddresses().contains("rubin.selenica@fshnstudent.info"));
+        assertTrue(capturedRequest.message().subject().data().contains("POL-2024-001"));
+        assertTrue(capturedRequest.message().body().html().data().contains("POL-2024-001"));
+        assertTrue(capturedRequest.message().body().html().data().contains("HEALTH"));
+        assertTrue(capturedRequest.message().body().html().data().contains("100000.00"));
     }
 
     @Test
@@ -126,11 +125,11 @@ class EmailServiceImplTest {
         verify(sesClient, times(1)).sendEmail(requestCaptor.capture());
 
         SendEmailRequest capturedRequest = requestCaptor.getValue();
-        assertThat(capturedRequest.source()).isEqualTo("noreply@insurance.com");
-        assertThat(capturedRequest.destination().toAddresses()).contains("customer@example.com");
-        assertThat(capturedRequest.message().subject().data()).contains("Claim Approved");
-        assertThat(capturedRequest.message().subject().data()).contains("CLM-2024-001");
-        assertThat(capturedRequest.message().body().html().data()).contains("CLM-2024-001");
+        assertEquals("noreply@insurance.com", capturedRequest.source());
+        assertTrue(capturedRequest.destination().toAddresses().contains("customer@example.com"));
+        assertTrue(capturedRequest.message().subject().data().contains("Claim Approved"));
+        assertTrue(capturedRequest.message().subject().data().contains("CLM-2024-001"));
+        assertTrue(capturedRequest.message().body().html().data().contains("CLM-2024-001"));
     }
 
     @Test
@@ -160,11 +159,11 @@ class EmailServiceImplTest {
         verify(sesClient, times(1)).sendEmail(requestCaptor.capture());
 
         SendEmailRequest capturedRequest = requestCaptor.getValue();
-        assertThat(capturedRequest.source()).isEqualTo("noreply@insurance.com");
-        assertThat(capturedRequest.destination().toAddresses()).contains("customer@example.com");
-        assertThat(capturedRequest.message().subject().data()).contains("Claim Status Update");
-        assertThat(capturedRequest.message().subject().data()).contains("CLM-2024-002");
-        assertThat(capturedRequest.message().body().html().data()).contains("Insufficient documentation provided");
+        assertEquals("noreply@insurance.com", capturedRequest.source());
+        assertTrue(capturedRequest.destination().toAddresses().contains("customer@example.com"));
+        assertTrue(capturedRequest.message().subject().data().contains("Claim Status Update"));
+        assertTrue(capturedRequest.message().subject().data().contains("CLM-2024-002"));
+        assertTrue(capturedRequest.message().body().html().data().contains("Insufficient documentation provided"));
     }
 
     @Test
@@ -194,19 +193,19 @@ class EmailServiceImplTest {
         String emailBody = requestCaptor.getValue().message().body().html().data();
         
         // Verify all placeholders are replaced
-        assertThat(emailBody).contains("POL-2024-001");
-        assertThat(emailBody).contains("HEALTH");
-        assertThat(emailBody).contains("100000.00");
-        assertThat(emailBody).contains("500.00");
-        assertThat(emailBody).contains("2024-01-01");
-        assertThat(emailBody).contains("2025-01-01");
-        assertThat(emailBody).contains("ACTIVE");
+        assertTrue(emailBody.contains("POL-2024-001"));
+        assertTrue(emailBody.contains("HEALTH"));
+        assertTrue(emailBody.contains("100000.00"));
+        assertTrue(emailBody.contains("500.00"));
+        assertTrue(emailBody.contains("2024-01-01"));
+        assertTrue(emailBody.contains("2025-01-01"));
+        assertTrue(emailBody.contains("ACTIVE"));
         
         // Verify no placeholders remain
-        assertThat(emailBody).doesNotContain("{{policyNumber}}");
-        assertThat(emailBody).doesNotContain("{{policyType}}");
-        assertThat(emailBody).doesNotContain("{{coverageAmount}}");
-        assertThat(emailBody).doesNotContain("{{premiumAmount}}");
+        assertFalse(emailBody.contains("{{policyNumber}}"));
+        assertFalse(emailBody.contains("{{policyType}}"));
+        assertFalse(emailBody.contains("{{coverageAmount}}"));
+        assertFalse(emailBody.contains("{{premiumAmount}}"));
     }
 
     @Test
@@ -227,14 +226,14 @@ class EmailServiceImplTest {
         String emailBody = requestCaptor.getValue().message().body().html().data();
         
         // Verify all placeholders are replaced
-        assertThat(emailBody).contains("CLM-2024-001");
-        assertThat(emailBody).contains("5000.00");
-        assertThat(emailBody).contains("2024-06-15");
-        assertThat(emailBody).contains("APPROVED");
+        assertTrue(emailBody.contains("CLM-2024-001"));
+        assertTrue(emailBody.contains("5000.00"));
+        assertTrue(emailBody.contains("2024-06-15"));
+        assertTrue(emailBody.contains("APPROVED"));
         
         // Verify no placeholders remain
-        assertThat(emailBody).doesNotContain("{{claimNumber}}");
-        assertThat(emailBody).doesNotContain("{{claimAmount}}");
-        assertThat(emailBody).doesNotContain("{{incidentDate}}");
+        assertFalse(emailBody.contains("{{claimNumber}}"));
+        assertFalse(emailBody.contains("{{claimAmount}}"));
+        assertFalse(emailBody.contains("{{incidentDate}}"));
     }
 }
