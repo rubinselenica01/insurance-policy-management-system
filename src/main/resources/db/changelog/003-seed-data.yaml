@@ -211,3 +211,9 @@ databaseChangeLog:
               - column: { name: rejection_reason, value: null }
               - column: { name: created_at, valueDate: 2025-07-23T00:00:00Z }
               - column: { name: updated_at, valueDate: 2025-07-23T00:00:00Z }
+
+        # Reset sequences to next available values after seed data insertion
+        - sql:
+            sql: SELECT setval('policy_id_seq', (SELECT MAX(id) FROM policies))
+        - sql:
+            sql: SELECT setval('claim_id_seq', (SELECT MAX(id) FROM claims))
