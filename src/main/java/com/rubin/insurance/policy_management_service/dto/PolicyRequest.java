@@ -13,7 +13,7 @@ import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-@PremiumAmount(coverageAmount = "coverageAmount", premiumAmount = "premiumAmount")
+@PremiumAmount
 @ValidDateRange
 @Schema(description = "Request body for creating a new insurance policy")
 public record PolicyRequest(

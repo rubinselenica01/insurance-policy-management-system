@@ -16,6 +16,4 @@ public @interface PremiumAmount {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-    String coverageAmount();
-    String premiumAmount();
 }
