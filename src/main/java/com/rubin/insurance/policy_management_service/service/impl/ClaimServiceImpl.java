@@ -106,7 +106,7 @@ public class ClaimServiceImpl implements ClaimService {
             throw new BusinessException("Claims can be submitted only for ACTIVE policies");
         }else if(claimRequest.claimAmount().compareTo(existingPolicy.getCoverageAmount()) == 1){
             throw new BusinessException("Claim amount cannot exceed policy coverage amount!");
-        }else if(!(claimRequest.incidentDate().isAfter(existingPolicy.getStartDate()) && claimRequest.incidentDate().isBefore(existingPolicy.getEndDate()))){
+        }else if(claimRequest.incidentDate().isBefore(existingPolicy.getStartDate()) || claimRequest.incidentDate().isAfter(existingPolicy.getEndDate())){
             throw new BusinessException("Incident date should be between policy valid date!");
         }
     }
