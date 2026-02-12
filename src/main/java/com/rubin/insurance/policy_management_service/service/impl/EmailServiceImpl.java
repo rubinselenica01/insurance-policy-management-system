@@ -135,7 +135,6 @@ public class EmailServiceImpl implements EmailService {
         } catch (SesException e) {
             log.error("AWS SES error sending email to {}: {} - {}", 
                 toEmail, e.awsErrorDetails().errorCode(), e.awsErrorDetails().errorMessage());
-            throw new RuntimeException("Failed to send email via SES", e);
         }
     }
 
