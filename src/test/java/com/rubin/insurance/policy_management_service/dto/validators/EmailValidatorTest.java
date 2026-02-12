@@ -1,5 +1,6 @@
 package com.rubin.insurance.policy_management_service.dto.validators;
 
+import com.rubin.insurance.policy_management_service.model.dto.validators.EmailValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

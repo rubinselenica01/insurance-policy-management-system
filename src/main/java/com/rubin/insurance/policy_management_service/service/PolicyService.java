@@ -1,8 +1,8 @@
 package com.rubin.insurance.policy_management_service.service;
 
-import com.rubin.insurance.policy_management_service.dto.PageResponse;
-import com.rubin.insurance.policy_management_service.dto.PolicyRequest;
-import com.rubin.insurance.policy_management_service.dto.PolicyResponse;
+import com.rubin.insurance.policy_management_service.model.dto.PageResponse;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyRequest;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyResponse;
 import org.springframework.data.domain.Pageable;
 
 public interface PolicyService {

@@ -1,10 +1,10 @@
 package com.rubin.insurance.policy_management_service.controller;
 
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.ApiError;
-import com.rubin.insurance.policy_management_service.dto.ApiResponseDTO;
-import com.rubin.insurance.policy_management_service.dto.ClaimRequest;
-import com.rubin.insurance.policy_management_service.dto.ClaimResponse;
-import com.rubin.insurance.policy_management_service.dto.UpdateClaimStatusDTO;
+import com.rubin.insurance.policy_management_service.model.dto.ApiResponseDTO;
+import com.rubin.insurance.policy_management_service.model.dto.ClaimRequest;
+import com.rubin.insurance.policy_management_service.model.dto.ClaimResponse;
+import com.rubin.insurance.policy_management_service.model.dto.UpdateClaimStatusDTO;
 import com.rubin.insurance.policy_management_service.service.ClaimService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

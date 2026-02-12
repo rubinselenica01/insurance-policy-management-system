@@ -4,10 +4,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.rubin.insurance.policy_management_service.events.ClaimEventType;
-import com.rubin.insurance.policy_management_service.events.EventEnvelope;
-import com.rubin.insurance.policy_management_service.events.payload.ClaimEventPayload;
+import com.rubin.insurance.policy_management_service.messaging.events.ClaimEventType;
+import com.rubin.insurance.policy_management_service.messaging.events.EventEnvelope;
+import com.rubin.insurance.policy_management_service.messaging.events.payload.ClaimEventPayload;
 import com.rubin.insurance.policy_management_service.service.EmailService;
 
 import lombok.RequiredArgsConstructor;

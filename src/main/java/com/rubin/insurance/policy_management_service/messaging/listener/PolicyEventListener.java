@@ -4,9 +4,9 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
-import com.rubin.insurance.policy_management_service.events.EventEnvelope;
-import com.rubin.insurance.policy_management_service.events.PolicyEventType;
-import com.rubin.insurance.policy_management_service.events.payload.PolicyEventPayload;
+import com.rubin.insurance.policy_management_service.messaging.events.EventEnvelope;
+import com.rubin.insurance.policy_management_service.messaging.events.PolicyEventType;
+import com.rubin.insurance.policy_management_service.messaging.events.payload.PolicyEventPayload;
 import com.rubin.insurance.policy_management_service.service.EmailService;
 
 import lombok.RequiredArgsConstructor;

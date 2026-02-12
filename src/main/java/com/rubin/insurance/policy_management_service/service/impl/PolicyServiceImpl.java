@@ -1,13 +1,13 @@
 package com.rubin.insurance.policy_management_service.service.impl;
 
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.NotFoundException;
-import com.rubin.insurance.policy_management_service.dto.PageResponse;
-import com.rubin.insurance.policy_management_service.dto.PolicyRequest;
-import com.rubin.insurance.policy_management_service.dto.PolicyResponse;
-import com.rubin.insurance.policy_management_service.events.PolicyEventType;
-import com.rubin.insurance.policy_management_service.mapper.PolicyMapper;
-import com.rubin.insurance.policy_management_service.messaging.PolicyEventPublisher;
-import com.rubin.insurance.policy_management_service.model.policy.Policy;
+import com.rubin.insurance.policy_management_service.model.dto.PageResponse;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyRequest;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyResponse;
+import com.rubin.insurance.policy_management_service.messaging.events.PolicyEventType;
+import com.rubin.insurance.policy_management_service.model.mapper.PolicyMapper;
+import com.rubin.insurance.policy_management_service.messaging.publisher.PolicyEventPublisher;
+import com.rubin.insurance.policy_management_service.model.entity.policy.Policy;
 import com.rubin.insurance.policy_management_service.repository.PolicyRepository;
 import com.rubin.insurance.policy_management_service.service.PolicyService;
 import jakarta.transaction.Transactional;

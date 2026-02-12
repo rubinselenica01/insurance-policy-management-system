@@ -1,8 +1,8 @@
 package com.rubin.insurance.policy_management_service.service;
 
-import com.rubin.insurance.policy_management_service.dto.ClaimRequest;
-import com.rubin.insurance.policy_management_service.dto.ClaimResponse;
-import com.rubin.insurance.policy_management_service.dto.UpdateClaimStatusDTO;
+import com.rubin.insurance.policy_management_service.model.dto.ClaimRequest;
+import com.rubin.insurance.policy_management_service.model.dto.ClaimResponse;
+import com.rubin.insurance.policy_management_service.model.dto.UpdateClaimStatusDTO;
 
 import java.util.List;
 

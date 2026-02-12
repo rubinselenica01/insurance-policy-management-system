@@ -1,7 +1,6 @@
 package com.rubin.insurance.policy_management_service.repository;
 
-import com.rubin.insurance.policy_management_service.model.claim.Claim;
-import com.rubin.insurance.policy_management_service.model.policy.Policy;
+import com.rubin.insurance.policy_management_service.model.entity.claim.Claim;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

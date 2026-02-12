@@ -2,10 +2,10 @@ package com.rubin.insurance.policy_management_service.controller;
 
 
 import com.rubin.insurance.policy_management_service.configuration.exception_handling.ApiError;
-import com.rubin.insurance.policy_management_service.dto.ApiResponseDTO;
-import com.rubin.insurance.policy_management_service.dto.PageResponse;
-import com.rubin.insurance.policy_management_service.dto.PolicyRequest;
-import com.rubin.insurance.policy_management_service.dto.PolicyResponse;
+import com.rubin.insurance.policy_management_service.model.dto.ApiResponseDTO;
+import com.rubin.insurance.policy_management_service.model.dto.PageResponse;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyRequest;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyResponse;
 import com.rubin.insurance.policy_management_service.service.PolicyService;
 import com.rubin.insurance.policy_management_service.utils.PaginationUtils;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

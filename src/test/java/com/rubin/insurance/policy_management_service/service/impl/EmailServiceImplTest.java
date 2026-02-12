@@ -1,12 +1,12 @@
 package com.rubin.insurance.policy_management_service.service.impl;
 
-import com.rubin.insurance.policy_management_service.events.ClaimEventType;
-import com.rubin.insurance.policy_management_service.events.PolicyEventType;
-import com.rubin.insurance.policy_management_service.events.payload.ClaimEventPayload;
-import com.rubin.insurance.policy_management_service.events.payload.PolicyEventPayload;
-import com.rubin.insurance.policy_management_service.model.claim.ClaimStatus;
-import com.rubin.insurance.policy_management_service.model.policy.PolicyStatus;
-import com.rubin.insurance.policy_management_service.model.policy.PolicyType;
+import com.rubin.insurance.policy_management_service.messaging.events.ClaimEventType;
+import com.rubin.insurance.policy_management_service.messaging.events.PolicyEventType;
+import com.rubin.insurance.policy_management_service.messaging.events.payload.ClaimEventPayload;
+import com.rubin.insurance.policy_management_service.messaging.events.payload.PolicyEventPayload;
+import com.rubin.insurance.policy_management_service.model.entity.claim.ClaimStatus;
+import com.rubin.insurance.policy_management_service.model.entity.policy.PolicyStatus;
+import com.rubin.insurance.policy_management_service.model.entity.policy.PolicyType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

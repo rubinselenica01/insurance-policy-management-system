@@ -2,9 +2,9 @@ package com.rubin.insurance.policy_management_service.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
-import com.rubin.insurance.policy_management_service.dto.PolicyRequest;
-import com.rubin.insurance.policy_management_service.dto.PolicyResponse;
-import com.rubin.insurance.policy_management_service.model.policy.PolicyType;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyRequest;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyResponse;
+import com.rubin.insurance.policy_management_service.model.entity.policy.PolicyType;
 import com.rubin.insurance.policy_management_service.service.PolicyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

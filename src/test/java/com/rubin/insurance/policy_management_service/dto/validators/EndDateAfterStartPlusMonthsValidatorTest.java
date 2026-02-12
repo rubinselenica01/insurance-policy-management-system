@@ -1,7 +1,9 @@
 package com.rubin.insurance.policy_management_service.dto.validators;
 
-import com.rubin.insurance.policy_management_service.dto.PolicyRequest;
-import com.rubin.insurance.policy_management_service.model.policy.PolicyType;
+import com.rubin.insurance.policy_management_service.model.dto.PolicyRequest;
+import com.rubin.insurance.policy_management_service.model.dto.validators.EndDateAfterStartPlusMonthsValidator;
+import com.rubin.insurance.policy_management_service.model.dto.validators.ValidDateRange;
+import com.rubin.insurance.policy_management_service.model.entity.policy.PolicyType;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
