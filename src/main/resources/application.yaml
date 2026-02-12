@@ -59,3 +59,16 @@ aws:
     from-email: ${AWS_SES_FROM_EMAIL:noreply@insurance.com}
     access-key-id: ${AWS_SES_ACCESS_KEY_ID:dummy-key}
     secret-access-key: ${AWS_SES_SECRET_ACCESS_KEY:dummy-secret}
+
+logging:
+  level:
+    root: INFO
+    com.rubin.insurance: INFO
+    # Reduce Kafka logging verbosity
+    org.apache.kafka: WARN
+    org.apache.kafka.clients.admin: ERROR
+    org.apache.kafka.clients.NetworkClient: ERROR
+    org.springframework.kafka: WARN
+    # Keep important Spring logs at INFO
+    org.springframework.boot: INFO
+    org.springframework.web: INFO
