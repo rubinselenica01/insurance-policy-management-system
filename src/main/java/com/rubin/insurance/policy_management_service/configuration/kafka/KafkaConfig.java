@@ -2,13 +2,15 @@ package com.rubin.insurance.policy_management_service.configuration.kafka;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.common.TopicPartition;
+import org.apache.kafka.common.header.internals.RecordHeaders;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
-import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
+
+import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.KafkaException;
 import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.config.TopicBuilder;
@@ -79,11 +81,29 @@ public class KafkaConfig {
                 new DeadLetterPublishingRecoverer(template,
                         (record, ex) -> new TopicPartition(record.topic() + ".dlq", record.partition()));
 
+        // Add custom headers with full context about the failure
+        recoverer.setHeadersFunction((consumerRecord, exception) -> {
+            RecordHeaders headers = new RecordHeaders();
+
+            // Exception class/message
+            headers.add("kafka_dlt-exception-fqcn", 
+                exception.getClass().getName().getBytes(StandardCharsets.UTF_8));
+            if (exception.getMessage() != null) {
+                headers.add("kafka_dlt-exception-message", 
+                    exception.getMessage().getBytes(StandardCharsets.UTF_8));
+            }
+            
+            // Failed timestamp
+            headers.add("kafka_dlt-failed-timestamp", 
+                String.valueOf(System.currentTimeMillis()).getBytes(StandardCharsets.UTF_8));
+            
+            return headers;
+        });
+
         ExponentialBackOffWithMaxRetries backOff = new ExponentialBackOffWithMaxRetries(3);
         backOff.setInitialInterval(500L);
         backOff.setMultiplier(2.0);
         backOff.setMaxInterval(5000L);
-
 
         return new DefaultErrorHandler(recoverer, backOff);
     }
