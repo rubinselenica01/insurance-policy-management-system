@@ -151,43 +151,159 @@ If the email isn't verified, you'll see: `MessageRejected: Email address is not 
 
 ## Docker setup and run instructions
 
-### Start the stack (Postgres, Redis, Kafka)
+There are two ways to run this application: **with Docker** (recommended for production) or **locally** (for development).
 
-1) Ensure `.env` is present (copied from `.env.example`) and set the vars as you wish
+### Option 1: Run everything with Docker (Recommended)
 
-2) Bring up the services:
+This option runs the entire stack (PostgreSQL, Redis, Kafka, and the Spring Boot app) in Docker containers.
+
+**1. Ensure `.env` is present**
+
+Copy the template and set your variables:
+```bash
+cp .env.example .env
+```
+
+Edit `.env` with your actual values for:
+- Database credentials (`POSTGRES_USER`, `POSTGRES_PASSWORD`)
+- Redis password (`REDIS_PASSWORD`)
+- AWS SES credentials (if using email features)
+- etc
+
+**2. Build and start all services**
 
 ```bash
-docker compose up -d
+docker-compose up --build
+```
+
+Or run in detached mode (background):
+```bash
+docker-compose up --build -d
 ```
 
 This starts:
-- **PostgreSQL** on `5432` (`insurance-postgres`)
-- **Redis** on `6379` with `--requirepass` from `REDIS_PASSWORD` (`insurance-redis`)
-- **Kafka** on `9094` (PLAINTEXT_HOST) (`insurance-kafka`)
+- **PostgreSQL** on port `5432` (`insurance-postgres`)
+- **Redis** on port `6379` (`insurance-redis`)
+- **Kafka** on port `9092` (`insurance-kafka`)
+- **Spring Boot App** on port `8080` (`insurance-app`)
 
-To stop:
+**3. View logs (if running detached)**
+
 ```bash
-docker compose down
+docker-compose logs -f app
 ```
 
-### Run the application
+**4. Stop the stack**
 
-1. Ensure the stack is running (Postgres/Redis/Kafka via `docker compose up -d`) and `.env` is configured.
-2. Load the environment variables (see [Environment variables and configuration guide](#environment-variables-and-configuration-guide)).
-3. Start the Spring Boot app:
+```bash
+docker-compose down
+```
 
-   ```bash
-   ./mvnw spring-boot:run
-   ```
+To remove volumes (deletes all data):
+```bash
+docker-compose down -v
+```
 
-   On Windows:
+**How the Dockerfile works:**
 
-   ```bash
-   mvnw.cmd spring-boot:run
-   ```
+The `Dockerfile` uses a **multi-stage build** for optimal image size and security:
 
-The API is available at **http://localhost:8080** (default Spring Boot port).
+- **Stage 1 (Build)**: Uses `maven:3.9-eclipse-temurin-21-alpine` to compile the application
+  - Copies `pom.xml` and downloads dependencies (cached layer)
+  - Copies source code and builds the JAR with `mvn clean package -DskipTests`
+  
+- **Stage 2 (Runtime)**: Uses `eclipse-temurin:21-jre-alpine` (JRE only, smaller image)
+  - Creates non-root user `spring` for security
+  - Copies only the compiled JAR from build stage
+  - Exposes port `8080`
+  - Configures JVM container support and memory limits
+
+**Environment configuration in Docker:**
+
+The `docker-compose.yml` file automatically configures the application to connect to containerized services:
+- Database URL: `jdbc:postgresql://postgres:5432/insurance_db`
+- Redis host: `redis`
+- Kafka bootstrap servers: `kafka:9092`
+- AWS credentials from `.env` file
+
+### Option 2: Run dependencies in Docker, app locally
+
+This option runs only PostgreSQL, Redis, and Kafka in Docker, while running the Spring Boot app on your local machine (useful for development).
+
+**1. Start only the dependencies**
+
+```bash
+docker-compose up -d postgres redis kafka
+```
+
+**2. Ensure `.env` is present**
+
+```bash
+cp .env.example .env
+```
+
+Set variables for **localhost** connections:
+- `POSTGRES_URL=jdbc:postgresql://localhost:5432/insurance_db`
+- `KAFKA_BOOTSTRAP_SERVERS=localhost:9092`
+- `REDIS_HOST=localhost`
+- etc
+
+**3. Load environment variables**
+
+- **Unix/Linux/macOS:**
+  ```bash
+  set -a && source .env && set +a
+  ```
+
+- **Windows PowerShell:**
+  ```powershell
+  Get-Content .env | ForEach-Object {
+    if ($_ -match '^([^=]+)=(.*)$') {
+      [System.Environment]::SetEnvironmentVariable($matches[1], $matches[2])
+    }
+  }
+  ```
+
+**4. Run the Spring Boot application**
+
+```bash
+./mvnw spring-boot:run
+```
+
+On Windows:
+```bash
+mvnw.cmd spring-boot:run
+```
+
+**5. Stop the dependencies**
+
+```bash
+docker-compose down
+```
+
+The API is available at **http://localhost:8080** with either option.
+
+## Running tests
+
+The project includes comprehensive unit and integration tests.
+
+**Run all tests:**
+
+```bash
+./mvnw test
+```
+
+On Windows:
+```bash
+mvnw.cmd test
+```
+
+**Test coverage includes:**
+
+- **Unit tests** for service layer (`EmailServiceImpl`, `PolicyServiceImpl`, `ClaimServiceImpl`)
+- **Custom validator tests** (`@ValidDateRange`, `@PremiumAmount`, `@Email`, `@CustomerFullName`)
+- **Integration tests** for REST endpoints (`PolicyController`)
+
 
 ## API documentation (Swagger)
 
