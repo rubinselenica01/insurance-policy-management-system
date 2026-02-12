@@ -70,6 +70,7 @@ public class ClaimServiceImpl implements ClaimService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     @Override
     public ClaimResponse updateStatus(Long id, UpdateClaimStatusDTO updateClaimStatusDTO) {
         log.info("updateStatus called with id={} status={}", id, updateClaimStatusDTO.claimStatus());
